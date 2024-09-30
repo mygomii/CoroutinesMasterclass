@@ -11,13 +11,10 @@ import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
 import kotlin.math.roundToInt
 
-class BitmapCompressor(
-    private val context: Context
-) {
-
+class BitmapCompressor(private val context: Context) {
     suspend fun compressImage(
         contentUri: Uri,
-        compressionThreshold: Long
+        compressionThreshold: Long,
     ): Bitmap? {
         return withContext(Dispatchers.IO) {
             val inputBytes = context
@@ -45,7 +42,9 @@ class BitmapCompressor(
 
                 ensureActive()
 
-                BitmapFactory.decodeByteArray(outputBytes, 0, outputBytes.size)
+                BitmapFactory.decodeByteArray(outputBytes, 0, outputBytes.size).also {
+                    println("##### decoded byte array")
+                }
             }
         }
     }

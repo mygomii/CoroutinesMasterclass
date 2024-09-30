@@ -39,11 +39,11 @@ fun PhotoPickerScreen(
                     contentUri = it ?: return@launch,
                     compressionThreshold = 1024L
                 )
-                println("Coroutine finished!")
+                println("##### Coroutine finished!")
             }
             delay(2000L)
             job.cancel()
-            println("Coroutine cancelled!")
+            println("##### Coroutine cancelled!")
         }
     }
     LaunchedEffect(key1 = true) {
