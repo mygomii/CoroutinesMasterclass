@@ -9,6 +9,7 @@ import com.plcoding.coroutinesmasterclass.sections.coroutine_contexts.main_safet
 import com.plcoding.coroutinesmasterclass.ui.theme.CoroutinesMasterclassTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -21,12 +22,33 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+//        lifecycleScope.launch {
+          /*  val job = launch {
+                val innerJob1 = launch {
+                    delay(2000L)
+                    println("#### Inner job1 finished")
+                }
+
+                val innerJob2 = launch {
+                    delay(2000L)
+                    println("#### Inner job2 finished")
+                }
+
+            }
+
+            delay(1000L)
+            job.cancel()
+            println("#### job cancelled")*/
+//        }
+
         customScope.launch {
             delay(2000L)
             println("Job finished!")
         }
+
         lifecycleScope.launch {
             delay(1000L)
+//            customScope.cancel()
             customScope.coroutineContext.cancelChildren()
             customScope.launch {
                 println("Hello World!")
