@@ -27,11 +27,12 @@ class BitmapCompressor(
                     inputStream.readBytes()
                 } ?: return@withContext null
 
+//            ensureActive()
             yield()
 
             withContext(Dispatchers.Default) {
                 val bitmap = BitmapFactory.decodeByteArray(inputBytes, 0, inputBytes.size)
-
+//            ensureActive()
                 yield()
 
                 var outputBytes: ByteArray
@@ -43,7 +44,7 @@ class BitmapCompressor(
                         quality -= (quality * 0.1).roundToInt()
                     }
                 } while (isActive && outputBytes.size > compressionThreshold && quality > 5)
-
+//            ensureActive()
                 yield()
 
                 BitmapFactory.decodeByteArray(outputBytes, 0, outputBytes.size)
