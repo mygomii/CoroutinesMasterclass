@@ -1,5 +1,6 @@
 package com.plcoding.coroutinesmasterclass.util
 
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 
 object RemoteService {
@@ -14,7 +15,10 @@ object RemoteService {
                 index++
                 println("Progress: ${index * 100 / chunks.size}%")
             } catch (e: Exception) {
+                if (e is CancellationException) throw e
                 println("Error uploading file: ${e.message}")
+            } finally {
+                println("finally")
             }
         }
         println("Upload Complete")
