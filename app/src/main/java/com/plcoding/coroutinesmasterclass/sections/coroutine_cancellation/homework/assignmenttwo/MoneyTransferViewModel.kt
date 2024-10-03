@@ -7,9 +7,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.cancellation.CancellationException
 
 class MoneyTransferViewModel : ViewModel() {
 
@@ -69,7 +71,10 @@ class MoneyTransferViewModel : ViewModel() {
                     }
 
                     debitAccount(state.savingsBalance, amountToTransfer)
-                    creditAccount(state.checkingBalance, amountToTransfer)
+
+                    withContext(NonCancellable) { // TODO;
+                        creditAccount(state.checkingBalance, amountToTransfer)
+                    }
 
                     state = state.copy(
                         resultMessage = "Transfer complete!",
@@ -77,12 +82,17 @@ class MoneyTransferViewModel : ViewModel() {
 
                 } catch (e: Exception) {
                     println("Error processing transfer: ${e.message}")
+                } catch (e: CancellationException) { // TODO;
+                    throw e
                 } finally {
-                    cleanupResources()
-                    state = state.copy(
-                        processingState = null,
-                        isTransferring = false,
-                    )
+                    withContext(NonCancellable) { // TODO;
+                        cleanupResources()
+                        state = state.copy(
+                            processingState = null,
+                            isTransferring = false,
+                        )
+                    }
+
                 }
             }
         }
