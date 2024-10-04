@@ -16,7 +16,12 @@ object EmailService {
         coroutineScope {
             mailingList.forEach { emailAddress ->
                 launch {
-                    sendEmail(emailAddress)
+                    try {
+                        sendEmail(emailAddress)
+                    } catch (e: Exception) {
+                        println("#### ${e.message}")
+                    }
+
                 }
             }
         }
