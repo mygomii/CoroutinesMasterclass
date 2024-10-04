@@ -14,7 +14,7 @@ object RemoteService {
                 delay(5)
                 index++
                 println("Progress: ${index * 100 / chunks.size}%")
-            } catch (e: Exception) {
+            } catch (e: Exception) { // TODO; Coroutine Cancellation - homework -1
                 if (e is CancellationException) throw e
                 println("Error uploading file: ${e.message}")
             } finally {
