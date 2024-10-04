@@ -72,7 +72,7 @@ class MoneyTransferViewModel : ViewModel() {
 
                     debitAccount(state.savingsBalance, amountToTransfer)
 
-                    withContext(NonCancellable) { // TODO;
+                    withContext(NonCancellable) { // TODO; Coroutine Cancellation homework - 2/2
                         creditAccount(state.checkingBalance, amountToTransfer)
                     }
 
@@ -82,10 +82,10 @@ class MoneyTransferViewModel : ViewModel() {
 
                 } catch (e: Exception) {
                     println("Error processing transfer: ${e.message}")
-                } catch (e: CancellationException) { // TODO;
+                } catch (e: CancellationException) {  // TODO; Coroutine Cancellation homework - 2/3
                     throw e
                 } finally {
-                    withContext(NonCancellable) { // TODO;
+                    withContext(NonCancellable) {  // TODO; Coroutine Cancellation homework - 2/1
                         cleanupResources()
                         state = state.copy(
                             processingState = null,
